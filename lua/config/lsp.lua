@@ -158,6 +158,36 @@ else
   vim.notify("clangd not found!", vim.log.levels.WARN, { title = "Nvim-config" })
 end
 
+-- set up go-language-server
+if utils.executable("gopls") then
+  lspconfig.gopls.setup{
+    on_attach = custom_attach,
+    flags = {
+      debounce_text_changes = 500
+    }
+  }
+else
+  vim.notify("gopls not found!", vim.log.levels.WARN, { title= "Nvim-config"})
+end
+
+-- set up typescript language server
+if utils.executable("tsserver") then
+  lspconfig.tsserver.setup {
+    on_attach = custom_attach,
+    flags = {
+      debounce_text_changes = 500,
+    }
+  }
+else
+  vim.notify("tsserver not found!", vim.log.levels.WARN, { title = "Nvim-config" })
+end
+
+-- set up volar
+lspconfig.volar.setup{
+  on_attach = custom_attach,
+  filetypes = {"javascript", 'javascriptreact', 'typescriptreact', 'vue', 'json'}
+}
+
 -- set up vim-language-server
 if utils.executable("vim-language-server") then
   lspconfig.vimls.setup {
@@ -218,18 +248,18 @@ fn.sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSignHin
 
 -- global config for diagnostic
 diagnostic.config {
-  underline = false,
-  virtual_text = false,
+  underline = true,
+  virtual_text = true,
   signs = true,
   severity_sort = true,
 }
 
--- lsp.handlers["textDocument/publishDiagnostics"] = lsp.with(lsp.diagnostic.on_publish_diagnostics, {
---   underline = false,
---   virtual_text = false,
---   signs = true,
---   update_in_insert = false,
--- })
+--lsp.handlers["textDocument/publishDiagnostics"] = lsp.with(lsp.diagnostic.on_publish_diagnostics, {
+--  underline = true,
+--  virtual_text = true,
+--  signs = true,
+--  update_in_insert = false,
+--})
 
 -- Change border of documentation hover window, See https://github.com/neovim/neovim/pull/13998.
 lsp.handlers["textDocument/hover"] = lsp.with(vim.lsp.handlers.hover, {

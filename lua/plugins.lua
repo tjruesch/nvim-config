@@ -354,7 +354,14 @@ packer.startup {
     }
 
     -- show and trim trailing whitespaces
-    use { "jdhao/whitespace.nvim", event = "VimEnter" }
+    -- use { "jdhao/whitespace.nvim", event = "VimEnter" }
+
+    -- error messages
+    use {
+      "folke/trouble.nvim",
+      requires = { "nvim-tree/nvim-web-devicons" },
+      config = [[require('trouble').setup{}]],
+    }
 
     -- file explorer
     use {
